@@ -1,0 +1,36 @@
+<!-- Translation Front -->
+{{define "front_translation"}}
+<div class="verse-key">{{ .VerseKey }}</div>
+<div class="quran-text">{{ template "range" .Arabic }}</div>
+{{ end }}
+
+<!-- Translation Back -->
+{{define "back_translation"}}
+<!--  -->
+{{ template "front_translation" . }}
+<div class="translation">{{ .Translation }}</div>
+<!--  -->
+{{ end}}
+
+<!-- Arabic Front -->
+{{define "front_arabic"}}
+<div class="verse-key">{{ .VerseKey }}</div>
+<div class="translation">{{ .Translation }}</div>
+{{ end }}
+
+<!-- Arabic Back -->
+{{define "back_arabic"}}
+<!--  -->
+{{ template "front_arabic" . }}
+<div class="quran-text">{{ template "range" .Arabic }}</div>
+<!--  -->
+{{ end}}
+
+<!-- Range -->
+{{ define "range" }}
+<!--  -->
+{{ range . }}
+<span class="quran-word"> {{ . }} </span>
+{{ end }}
+<!--  -->
+{{ end }}
