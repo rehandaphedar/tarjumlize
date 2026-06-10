@@ -40,4 +40,4 @@ Due to a bug in [genanki-go](https://github.com/npcnixel/genanki-go/pull/9), `Ar
 
 A [Pull Request](https://github.com/npcnixel/genanki-go/pull/9) has been opened with the fix.
 
-Until it is merged ,run `Tools → Check Database` after importing the deck. This will rebuild the affected cards and make them appear normally.
+Until it is merged, run `Tools → Check Database` after importing the deck. This will rebuild the affected cards and make them appear normally.
