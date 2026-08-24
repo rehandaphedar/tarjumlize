@@ -3,7 +3,7 @@ package main
 import (
 	"log"
 
-	qul "git.sr.ht/~rehandaphedar/genanki-go-utils/v2/pkg/qul"
+	qul "git.sr.ht/~rehandaphedar/genanki-go-utils/v4/pkg/qul"
 )
 
 func renderSegment(wordIndex qul.WordIndex, verseKey string, from, to int) []string {

@@ -9,7 +9,7 @@ import (
 	"os"
 	"path/filepath"
 
-	"git.sr.ht/~rehandaphedar/genanki-go-utils/v2/pkg/qul"
+	"git.sr.ht/~rehandaphedar/genanki-go-utils/v4/pkg/qul"
 	"github.com/npcnixel/genanki-go"
 	"go.yaml.in/yaml/v4"
 )
@@ -38,8 +38,9 @@ func main() {
 	templateBackArabicName := flag.String("template-back-arabic", "back_arabic", "Name of the back template for Arabic Recall")
 
 	wordsPath := flag.String("words", "data/qpc-hafs-word-by-word.json", "Path to words data")
-	translationPath := flag.String("translation", "data/en-sahih-international-simple.json", "Path to translation data")
 	layoutPath := flag.String("layout", "data/qpc-v4-tajweed-15-lines.db", "Path to layout data")
+	phrasesPath := flag.String("phrases", "data/phrases.json", "Path to phrases data")
+	translationPath := flag.String("translation", "data/en-sahih-international-simple.json", "Path to translation data")
 	metadataAyahPath := flag.String("metadata-ayah", "data/quran-metadata-ayah.json", "Path to ayah metadata")
 	metadataJuzPath := flag.String("metadata-juz", "data/quran-metadata-juz.json", "Path to juz metadata")
 	metadataHizbPath := flag.String("metadata-hizb", "data/quran-metadata-hizb.json", "Path to hizb metadata")
@@ -63,12 +64,17 @@ func main() {
 	flag.Parse()
 
 	var words map[string]qul.Word
+	var phrases map[string]qul.Phrase
 	var translation map[string]Verse
 	var metadataAyah map[string]qul.MetadataAyah
 
 	var metadataDivision qul.MetadataDivision
 
 	err := loadJSON(*wordsPath, &words)
+	if err != nil {
+		log.Fatal(err)
+	}
+	err = loadJSON(*phrasesPath, &phrases)
 	if err != nil {
 		log.Fatal(err)
 	}
@@ -101,7 +107,7 @@ func main() {
 		log.Fatal(err)
 	}
 
-	index, err := qul.BuildIndex(*layoutPath, words, metadataDivision, tagFormat)
+	index, err := qul.BuildIndex(words, *layoutPath, phrases, metadataDivision, tagFormat)
 	if err != nil {
 		log.Fatalf("build index: %v", err)
 	}
@@ -218,7 +224,10 @@ func main() {
 			)
 
 			noteIdBase := fmt.Sprintf("%d_%s", model.ID, segmentId)
-			note.ID = qul.GenerateID(noteIdBase)
+			note.ID, err = qul.GenerateID(noteIdBase)
+			if err != nil {
+				log.Fatalf("generate note id: %v", err)
+			}
 			deck.AddNote(note)
 		}
 	}
